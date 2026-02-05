@@ -94,6 +94,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return !jobTitle.includes("who wants to be hired");
     });
 
+    posts = posts.map((post: PostType) => {
+      const p = { ...post } as Record<string, unknown>;
+      delete p._highlightResult;
+      delete p._tags;
+      return p;
+    });
+
     return res.status(200).send({
       success: true,
       data: posts,
