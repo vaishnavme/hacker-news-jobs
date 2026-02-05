@@ -6,17 +6,22 @@ import {
   FilterFreeIcons,
   Cancel01FreeIcons,
   Search01FreeIcons,
+  Copy01FreeIcons,
+  Tick01FreeIcons,
 } from "@hugeicons/core-free-icons";
 import YearSelect from "@/components/common-filters/year-select";
 import MonthSelect from "@/components/common-filters/month-select";
 import JobContainer from "@/components/jobs/jobs-container";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import useCopyToClipboard from "@/hooks/useCopyToClipboard";
 
 const Home = () => {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
+
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const { isCopied, onCopy } = useCopyToClipboard();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onFitlerUpdate = (type: string, value: any) => {
@@ -78,20 +83,32 @@ const Home = () => {
 
           <form
             onClick={onSearchQuerySubmit}
-            className="w-full border-b pb-2 flex items-center justify-between px-2"
+            className="w-full border-b pb-2 flex items-center gap-4 justify-between px-2"
           >
             <Input name="search" placeholder="Search jobs" ref={inputRef} />
-            <Button
-              type="submit"
-              onClick={() =>
-                onFitlerUpdate("query", inputRef?.current?.value || "")
-              }
-              variant="outline"
-              className="ml-2"
-            >
-              Search
-              <HugeiconsIcon icon={Search01FreeIcons} strokeWidth={2} />
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                type="submit"
+                onClick={() =>
+                  onFitlerUpdate("query", inputRef?.current?.value || "")
+                }
+                variant="outline"
+              >
+                Search
+                <HugeiconsIcon icon={Search01FreeIcons} strokeWidth={2} />
+              </Button>
+              <Button
+                onClick={() => onCopy(window.location.href)}
+                variant="outline"
+                size="icon"
+              >
+                <HugeiconsIcon
+                  strokeWidth={2}
+                  icon={isCopied ? Tick01FreeIcons : Copy01FreeIcons}
+                  className={isCopied ? "text-green-700" : ""}
+                />
+              </Button>
+            </div>
           </form>
 
           <JobContainer />
