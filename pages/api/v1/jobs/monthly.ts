@@ -1,22 +1,24 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 import JobServices from "@/services/jobs-services";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const response = await axios.get(
-      "https://hacker-news.firebaseio.com/v0/jobstories.json",
+      `https://hacker-news.firebaseio.com/v0/user/whoishiring.json`,
     );
-    const jobPostIds: string[] = response?.data ?? [];
+    const monthlyJobPostIds: string[] = response.data.submitted;
 
-    if (jobPostIds.length === 0) {
+    if (monthlyJobPostIds.length === 0) {
       return res.status(200).send({
         success: true,
         data: [],
       });
     }
 
-    const result = await JobServices.getAllPostByIds(jobPostIds);
+    const result = await JobServices.getAllPostByIds(
+      monthlyJobPostIds.slice(0, 50),
+    );
 
     return res.status(200).send({
       success: true,
@@ -26,7 +28,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(500).send({
       success: false,
       error: {
-        message: "Something went wrong while fetching job posts.",
+        message: "Something went wrong while fetching monthly job posts.",
       },
     });
   }
