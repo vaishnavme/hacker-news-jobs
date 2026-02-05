@@ -21,4 +21,5 @@ export type PostType = {
   story_text: string;
   title: string;
   updated_at: string;
+  url?: string;
 };
