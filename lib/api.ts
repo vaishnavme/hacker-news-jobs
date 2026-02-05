@@ -19,6 +19,4 @@ const apiV1 = createInstance("v1");
 
 export const jobsAPI = {
   allJobs: (query = {}) => apiV1.get("/jobs", { params: query }),
-
-  monthly: () => apiV1.get("/jobs/monthly"),
 };
