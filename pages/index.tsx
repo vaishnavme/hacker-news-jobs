@@ -9,14 +9,11 @@ import {
   Copy01FreeIcons,
   Tick01FreeIcons,
 } from "@hugeicons/core-free-icons";
-import YearSelect from "@/components/common-filters/year-select";
-import MonthSelect from "@/components/common-filters/month-select";
 import JobContainer from "@/components/jobs/jobs-container";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import useCopyToClipboard from "@/hooks/useCopyToClipboard";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
+import JobFilters from "@/components/jobs/job-filters";
 
 const Home = () => {
   const router = useRouter();
@@ -154,83 +151,12 @@ const Home = () => {
           />
         </Button>
 
-        {/* Backdrop for mobile */}
-        {isFilterOpen && (
-          <div
-            className="fixed inset-0 bg-black/50 z-30 lg:hidden"
-            onClick={() => setIsFilterOpen(false)}
-          />
-        )}
-        <aside
-          className={`fixed top-0 right-0 h-full w-64 bg-background z-40 transform transition-transform duration-300 ease-in-out lg:top-0 lg:right-[calc(50%-20rem-16rem)] ${
-            isFilterOpen ? "translate-x-0" : "translate-x-full lg:translate-x-0"
-          }`}
-        >
-          <div className="w-64 min-h-screen p-4 space-y-4">
-            <div className="flex items-center justify-between pt-34">
-              <p className="text-xs font-sans font-medium">Filters</p>
-            </div>
-            <div className="space-y-4">
-              <YearSelect
-                value={
-                  router.query.year
-                    ? parseInt(String(router.query.year), 10)
-                    : null
-                }
-                onValueChange={(value) => onFitlerUpdate("year", value)}
-              />
-              <MonthSelect
-                value={
-                  router.query.month
-                    ? parseInt(String(router.query.month), 10)
-                    : null
-                }
-                onValueChange={(value) => onFitlerUpdate("month", value)}
-              />
-
-              <div className="flex items-center gap-1">
-                <Checkbox
-                  id="remote-only"
-                  checked={router.query.remote === "true"}
-                  onCheckedChange={(checked) =>
-                    onFitlerUpdate("remote", checked)
-                  }
-                />
-                <Label htmlFor="remote-only">Remote only</Label>
-              </div>
-
-              <div className="flex items-center gap-1">
-                <Checkbox
-                  id="freelance-only"
-                  checked={router.query.freelance === "true"}
-                  onCheckedChange={(checked) =>
-                    onFitlerUpdate("freelance", checked)
-                  }
-                />
-                <Label htmlFor="freelance-only">Freelance only</Label>
-              </div>
-
-              <div className="flex items-center gap-1">
-                <Checkbox
-                  id="internship-only"
-                  checked={router.query.internship === "true"}
-                  onCheckedChange={(checked) =>
-                    onFitlerUpdate("internship", checked)
-                  }
-                />
-                <Label htmlFor="internship-only">Internship only</Label>
-              </div>
-
-              <Button
-                variant="outline"
-                onClick={clearFilters}
-                className="ml-auto"
-              >
-                Reset
-              </Button>
-            </div>
-          </div>
-        </aside>
+        <JobFilters
+          isFilterOpen={isFilterOpen}
+          setIsFilterOpen={setIsFilterOpen}
+          onFilterUpdate={onFitlerUpdate}
+          clearFilters={clearFilters}
+        />
       </div>
     </>
   );
