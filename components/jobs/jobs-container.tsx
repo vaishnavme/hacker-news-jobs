@@ -23,7 +23,12 @@ const JobContainer = () => {
       : 0;
 
     if (currentPage > 0) {
-      currentQuery.page = String(currentPage - 1);
+      const newPage = currentPage - 1;
+      if (newPage === 0) {
+        delete currentQuery.page;
+      } else {
+        currentQuery.page = String(newPage);
+      }
       router.push({
         query: currentQuery,
       });
@@ -59,7 +64,7 @@ const JobContainer = () => {
         </div>
       ) : null}
 
-      <div className="flex items-center justify-between my-6">
+      <div className="flex items-center justify-between my-6 px-2">
         <Button variant="outline" onClick={onPreviousClick}>
           Previous
         </Button>
