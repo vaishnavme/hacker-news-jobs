@@ -31,3 +31,16 @@ export const getMonthOptions = (): Array<{ label: string; value: number }> => {
   ];
   return months;
 };
+
+export const formatUnixDate = (unixTime: number): string => {
+  const date = new Date(unixTime * 1000);
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  };
+  return date.toLocaleDateString("en-US", options);
+};
+
+export const getHackerNewsItemUrl = (id: number): string =>
+  `https://news.ycombinator.com/item?id=${id}`;
