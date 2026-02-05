@@ -3,8 +3,8 @@ export const tabOptions = {
     value: "monthly-hiring",
     label: "Monthly Hiring",
   },
-  allJobs: {
-    value: "all-jobs",
+  trendingJobs: {
+    value: "trending-jobs",
     label: "Trending Jobs",
   },
 };
