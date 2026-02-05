@@ -109,7 +109,11 @@ const Home = () => {
             onClick={onSearchQuerySubmit}
             className="w-full border-b pb-2 flex items-center gap-4 justify-between px-2"
           >
-            <Input name="search" placeholder="Search jobs" ref={inputRef} />
+            <Input
+              name="search"
+              placeholder="Search jobs by country, role, or keyword..."
+              ref={inputRef}
+            />
             <div className="flex items-center gap-2">
               <Button
                 type="submit"
