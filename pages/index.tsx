@@ -52,6 +52,14 @@ const Home = () => {
         }
         break;
 
+      case "freelance":
+        if (value) {
+          currentQuery.freelance = "true";
+        } else {
+          delete currentQuery.freelance;
+        }
+        break;
+
       default:
         break;
     }
@@ -181,6 +189,17 @@ const Home = () => {
                   }
                 />
                 <Label htmlFor="remote-only">Remote only</Label>
+              </div>
+
+              <div className="flex items-center gap-1">
+                <Checkbox
+                  id="freelance-only"
+                  checked={router.query.freelance === "true"}
+                  onCheckedChange={(checked) =>
+                    onFitlerUpdate("freelance", checked)
+                  }
+                />
+                <Label htmlFor="freelance-only">Freelance only</Label>
               </div>
 
               <Button
