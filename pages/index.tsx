@@ -109,8 +109,8 @@ const Home = () => {
         <main className="w-full max-w-xl mx-auto space-y-4">
           <header className="text-center p-10">
             <h1 className="text-3xl font-normal text-emerald-800 font-serif">
-              Find tech <i className="text-emerald-600">jobs</i> <br /> in your
-              favorite startups!
+              Find tech <i className="text-emerald-600">jobs</i> <br /> in
+              startups!
             </h1>
           </header>
 
