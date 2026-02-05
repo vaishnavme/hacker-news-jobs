@@ -12,7 +12,7 @@ import { Label } from "../ui/label";
 const monthOptions = getMonthOptions();
 
 interface MonthSelectProps {
-  value: { label: string; value: number } | null;
+  value?: { label: string; value: number } | null;
   onValueChange: (value: { label: string; value: number } | null) => void;
 }
 

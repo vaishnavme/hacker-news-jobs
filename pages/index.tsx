@@ -1,9 +1,34 @@
 import Head from "next/head";
-import AllJobs from "@/components/jobs/all-jobs";
+import { useRouter } from "next/router";
 import YearSelect from "@/components/common-filters/year-select";
 import MonthSelect from "@/components/common-filters/month-select";
+import JobContainer from "@/components/jobs/jobs-container";
 
 const Home = () => {
+  const router = useRouter();
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onFitlerUpdate = (type: string, value: any) => {
+    const currentQuery = router?.query ? { ...router.query } : {};
+
+    switch (type) {
+      case "year":
+        currentQuery.year = value;
+        break;
+
+      case "month":
+        currentQuery.month = value.value;
+        break;
+
+      default:
+        break;
+    }
+
+    router.push({
+      query: currentQuery,
+    });
+  };
+
   return (
     <>
       <Head>
@@ -14,7 +39,7 @@ const Home = () => {
         />
       </Head>
       <div className="relative flex items-start justify-center gap-6">
-        <main className="max-w-4xl">
+        <main className="w-full max-w-xl">
           <header className="text-center p-10">
             <h1 className="text-2xl font-medium">
               Find tech jobs <br /> in your favorite startups!
@@ -25,15 +50,19 @@ const Home = () => {
             <p className="text-xs font-medium px-2 py-2">Trending Jobs</p>
           </div>
 
-          <AllJobs />
+          <JobContainer />
         </main>
 
         <aside className="relative">
           <div className="w-64 min-h-screen fixed pt-38 space-y-4">
             <p className="text-xs font-sans font-medium">Filters</p>
             <div className="space-y-4">
-              <YearSelect />
-              <MonthSelect />
+              <YearSelect
+                onValueChange={(value) => onFitlerUpdate("year", value)}
+              />
+              <MonthSelect
+                onValueChange={(value) => onFitlerUpdate("month", value)}
+              />
             </div>
           </div>
         </aside>

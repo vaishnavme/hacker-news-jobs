@@ -13,7 +13,7 @@ const currentYear = new Date().getFullYear();
 const yearOptions = getYearOptions(currentYear);
 
 interface YearSelectProps {
-  value: number | null;
+  value?: number | null;
   onValueChange: (value: number | null) => void;
 }
 

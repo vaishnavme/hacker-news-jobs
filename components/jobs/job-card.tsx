@@ -1,16 +1,16 @@
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link01FreeIcons } from "@hugeicons/core-free-icons";
-import { JobPost } from "@/lib/global.types";
+import { PostType } from "@/lib/global.types";
 import { Button } from "../ui/button";
 import { formatUnixDate, getHackerNewsItemUrl } from "@/lib/utils";
 import { Skeleton } from "../ui/skeleton";
 
 interface JobCardProps {
-  job: JobPost;
+  post: PostType;
 }
 
 const JobCard = (props: JobCardProps) => {
-  const { job } = props;
+  const { post } = props;
 
   return (
     <div className="p-2 flex items-start justify-between">
@@ -18,13 +18,13 @@ const JobCard = (props: JobCardProps) => {
         <a
           target="_blank"
           rel="noopener noreferrer"
-          href={getHackerNewsItemUrl(job.id)}
+          href={getHackerNewsItemUrl(post.story_id)}
         >
-          <h3 className="font-medium text-sm hover:underline">{job.title}</h3>
+          <h3 className="font-medium text-sm hover:underline">{post.title}</h3>
         </a>
         <p className="text-xs text-neutral-500">
-          @{job.by} ·{" "}
-          <span className="font-mono">{formatUnixDate(job.time)}</span>
+          @{post.author} ·{" "}
+          <span className="font-mono">{formatUnixDate(post.created_at_i)}</span>
         </p>
       </div>
       <Button
@@ -34,7 +34,7 @@ const JobCard = (props: JobCardProps) => {
           <a
             target="_blank"
             rel="noopener noreferrer"
-            href={job?.url ?? getHackerNewsItemUrl(job.id)}
+            href={getHackerNewsItemUrl(post.story_id)}
           />
         }
       >

@@ -18,7 +18,7 @@ const createInstance = (version: ApiVersion) => {
 const apiV1 = createInstance("v1");
 
 export const jobsAPI = {
-  allJobs: () => apiV1.get("/jobs"),
+  allJobs: (query = {}) => apiV1.get("/jobs", { params: query }),
 
   monthly: () => apiV1.get("/jobs/monthly"),
 };
