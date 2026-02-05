@@ -1,8 +1,7 @@
-import { JobPost } from "@/lib/global.types";
-import { Button } from "../ui/button";
-import Link from "next/link";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link01FreeIcons } from "@hugeicons/core-free-icons";
+import { JobPost } from "@/lib/global.types";
+import { Button } from "../ui/button";
 import { formatUnixDate, getHackerNewsItemUrl } from "@/lib/utils";
 import { Skeleton } from "../ui/skeleton";
 
@@ -16,9 +15,13 @@ const JobCard = (props: JobCardProps) => {
   return (
     <div className="p-2 flex items-start justify-between">
       <div className="space-y-0.5">
-        <Link href={getHackerNewsItemUrl(job.id)}>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href={getHackerNewsItemUrl(job.id)}
+        >
           <h3 className="font-medium text-sm hover:underline">{job.title}</h3>
-        </Link>
+        </a>
         <p className="text-xs text-neutral-500">
           @{job.by} ·{" "}
           <span className="font-mono">{formatUnixDate(job.time)}</span>
@@ -27,7 +30,13 @@ const JobCard = (props: JobCardProps) => {
       <Button
         variant="ghost"
         size="icon"
-        render={<Link href={job?.url ?? getHackerNewsItemUrl(job.id)} />}
+        render={
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href={job?.url ?? getHackerNewsItemUrl(job.id)}
+          />
+        }
       >
         <HugeiconsIcon icon={Link01FreeIcons} strokeWidth={2} />
       </Button>
