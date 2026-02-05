@@ -43,7 +43,9 @@ const JobFilters = (props: JobFiltersProps) => {
       >
         <div className="w-64 min-h-screen p-4 space-y-4">
           <div className="flex items-center justify-between pt-38">
-            <p className="text-xs font-sans font-medium">Filters</p>
+            <p className="text-sm font-medium font-sans uppercase tracking-wider">
+              Filters
+            </p>
           </div>
           <div className="space-y-4">
             <RoleSelect
