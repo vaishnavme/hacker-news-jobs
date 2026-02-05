@@ -99,17 +99,18 @@ const Home = () => {
   return (
     <>
       <Head>
-        <title>Tech Jobs in Startups - Monthly Hiring & Trending Jobs</title>
+        <title>HackerNews Jobs | Find tech jobs in startups</title>
         <meta
           name="description"
-          content="Discover the latest tech job trends in startups with our comprehensive dashboard. Explore monthly hiring patterns and trending job roles to stay ahead in the competitive job market."
+          content="Discover tech job opportunities in startups with HackerNews Jobs. Search and filter by role, location, and more to find your next career move."
         />
       </Head>
       <div className="relative min-h-screen">
-        <main className="w-full max-w-xl mx-auto">
+        <main className="w-full max-w-xl mx-auto space-y-4">
           <header className="text-center p-10">
-            <h1 className="text-2xl font-medium">
-              Find tech jobs <br /> in your favorite startups!
+            <h1 className="text-3xl font-normal text-emerald-800 font-serif">
+              Find tech <i className="text-emerald-600">jobs</i> <br /> in your
+              favorite startups!
             </h1>
           </header>
 

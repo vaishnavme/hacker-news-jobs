@@ -9,7 +9,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <div
-        className={`${fonts.geistSans.className} font-sans max-w-6xl mx-auto`}
+        className={`${fonts.lora.variable} ${fonts.geistSans.className} font-sans max-w-6xl mx-auto`}
       >
         <Component {...pageProps} />
       </div>
