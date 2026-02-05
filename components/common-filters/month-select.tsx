@@ -1,4 +1,3 @@
-import { getMonthOptions } from "@/lib/utils";
 import {
   Combobox,
   ComboboxContent,
@@ -8,8 +7,7 @@ import {
   ComboboxItem,
 } from "../ui/combobox";
 import { Label } from "../ui/label";
-
-const monthOptions = getMonthOptions();
+import { monthOptions } from "@/lib/constants";
 
 interface MonthSelectProps {
   value?: number | null;
