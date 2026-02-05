@@ -3,8 +3,48 @@ import axios from "axios";
 import { PostType } from "@/lib/global.types";
 import { getHNTimeRange } from "@/lib/utils";
 
+const getHackerNewsAPIURL = ({
+  timeRange,
+  queryInput,
+  pageNumber,
+  remote,
+}: {
+  timeRange?: { start: number; end: number } | null;
+  queryInput?: string | null;
+  pageNumber?: number | null;
+  remote?: boolean;
+}): string => {
+  let queryString = queryInput ? queryInput.trim() : "";
+
+  if (remote && !queryString.toLowerCase().includes("remote")) {
+    queryString += " remote";
+  }
+
+  const url = new URL("https://hn.algolia.com/api/v1/search_by_date");
+  url.searchParams.set(
+    "tags",
+    queryString ? "job" : "story,author_whoishiring",
+  );
+  url.searchParams.set("hitsPerPage", String(50));
+
+  if (pageNumber && pageNumber > 0) {
+    url.searchParams.set("page", String(pageNumber));
+  }
+
+  if (timeRange) {
+    const numericFilters = `created_at_i>=${timeRange.start},created_at_i<${timeRange.end}`;
+    url.searchParams.set("numericFilters", numericFilters);
+  }
+
+  if (queryString) {
+    url.searchParams.set("query", queryString.trim());
+  }
+
+  return url.toString();
+};
+
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { page, month, year, q } = req.query;
+  const { page, month, year, q, remote } = req.query;
 
   const pageNumber = Math.max(0, parseInt((page as string) || "1", 10) - 1);
 
@@ -15,34 +55,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const timeRange =
     yearNum || monthNum ? getHNTimeRange(yearNum, monthNum) : null;
 
-  const url = new URL("https://hn.algolia.com/api/v1/search_by_date");
-
-  url.searchParams.set("tags", queryInput ? "job" : "story,author_whoishiring");
-  url.searchParams.set("hitsPerPage", String(50));
-
-  if (pageNumber > 0) {
-    url.searchParams.set("page", String(pageNumber));
-  }
-
-  if (timeRange) {
-    const numericFilters = `created_at_i>=${timeRange.start},created_at_i<${timeRange.end}`;
-    url.searchParams.set("numericFilters", numericFilters);
-  }
-
-  if (queryInput && queryInput.length) {
-    url.searchParams.set("query", queryInput.trim());
-  }
-
   try {
-    const response = await axios.get(url.toString());
+    const hackernewsAPI = getHackerNewsAPIURL({
+      timeRange,
+      queryInput,
+      pageNumber,
+      remote: remote === "true",
+    });
+    console.log("Fetching from HackerNews API with URL:", hackernewsAPI);
+    const response = await axios.get(hackernewsAPI);
     let posts = response.data.hits || [];
 
     posts = posts.filter((post: PostType) => {
       const jobTitle = post.title.toLowerCase();
-      return (
-        !jobTitle.includes("who wants to be hired") &&
-        !jobTitle.includes("ask hn: freelancer? seeking freelancer? ")
-      );
+      return !jobTitle.includes("who wants to be hired");
     });
 
     return res.status(200).send({

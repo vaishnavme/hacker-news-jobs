@@ -15,6 +15,8 @@ import JobContainer from "@/components/jobs/jobs-container";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import useCopyToClipboard from "@/hooks/useCopyToClipboard";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 const Home = () => {
   const router = useRouter();
@@ -40,6 +42,15 @@ const Home = () => {
         if (value) {
           currentQuery.q = value;
         }
+        break;
+
+      case "remote":
+        if (value) {
+          currentQuery.remote = "true";
+        } else {
+          delete currentQuery.remote;
+        }
+        break;
 
       default:
         break;
@@ -160,6 +171,17 @@ const Home = () => {
                 }
                 onValueChange={(value) => onFitlerUpdate("month", value)}
               />
+
+              <div className="flex items-center gap-1">
+                <Checkbox
+                  id="remote-only"
+                  checked={router.query.remote === "true"}
+                  onCheckedChange={(checked) =>
+                    onFitlerUpdate("remote", checked)
+                  }
+                />
+                <Label htmlFor="remote-only">Remote only</Label>
+              </div>
 
               <Button
                 variant="outline"
