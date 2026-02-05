@@ -18,7 +18,7 @@ const JobCard = (props: JobCardProps) => {
         <a
           target="_blank"
           rel="noopener noreferrer"
-          href={getHackerNewsItemUrl(post.story_id)}
+          href={post?.url ? post.url : getHackerNewsItemUrl(post.story_id)}
         >
           <h3 className="font-medium text-sm hover:underline">{post.title}</h3>
         </a>
@@ -34,7 +34,7 @@ const JobCard = (props: JobCardProps) => {
           <a
             target="_blank"
             rel="noopener noreferrer"
-            href={getHackerNewsItemUrl(post.story_id)}
+            href={post?.url ? post.url : getHackerNewsItemUrl(post.story_id)}
           />
         }
       >
