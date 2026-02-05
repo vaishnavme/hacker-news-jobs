@@ -5,6 +5,6 @@ export const tabOptions = {
   },
   allJobs: {
     value: "all-jobs",
-    label: "All Jobs",
+    label: "Trending Jobs",
   },
 };
