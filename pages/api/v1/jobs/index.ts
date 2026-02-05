@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 import { PostType } from "@/lib/global.types";
 import { getHNTimeRange } from "@/lib/utils";
+import { hackernewsAPI } from "@/lib/constants";
 
 const getHackerNewsAPIURL = ({
   timeRange,
@@ -10,6 +11,7 @@ const getHackerNewsAPIURL = ({
   remote,
   freelance,
   internship,
+  role,
 }: {
   timeRange?: { start: number; end: number } | null;
   queryInput?: string | null;
@@ -17,8 +19,13 @@ const getHackerNewsAPIURL = ({
   remote?: boolean;
   freelance?: boolean;
   internship?: boolean;
+  role?: string | undefined;
 }): string => {
   let queryString = queryInput ? queryInput.trim() : "";
+
+  if (role && !queryString.toLowerCase().includes(role.toLowerCase())) {
+    queryString += ` ${role}`;
+  }
 
   if (remote && !queryString.toLowerCase().includes("remote")) {
     queryString += " remote";
@@ -32,7 +39,7 @@ const getHackerNewsAPIURL = ({
     queryString += " internship";
   }
 
-  const url = new URL("https://hn.algolia.com/api/v1/search_by_date");
+  const url = new URL(hackernewsAPI);
   url.searchParams.set(
     "tags",
     queryString ? "job" : "story,author_whoishiring",
@@ -56,7 +63,8 @@ const getHackerNewsAPIURL = ({
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { page, month, year, q, remote, freelance, internship } = req.query;
+  const { page, month, year, q, remote, freelance, internship, role } =
+    req.query;
 
   const pageNumber = Math.max(0, parseInt((page as string) || "1", 10) - 1);
 
@@ -68,16 +76,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     yearNum || monthNum ? getHNTimeRange(yearNum, monthNum) : null;
 
   try {
-    const hackernewsAPI = getHackerNewsAPIURL({
+    const hnAPI = getHackerNewsAPIURL({
       timeRange,
       queryInput,
       pageNumber,
+      role: role as string | undefined,
       remote: remote === "true",
       freelance: freelance === "true",
       internship: internship === "true",
     });
-    console.log("Fetching from HackerNews API with URL:", hackernewsAPI);
-    const response = await axios.get(hackernewsAPI);
+
+    const response = await axios.get(hnAPI);
     let posts = response.data.hits || [];
 
     posts = posts.filter((post: PostType) => {

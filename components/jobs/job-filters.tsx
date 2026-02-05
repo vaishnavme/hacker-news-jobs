@@ -4,6 +4,7 @@ import YearSelect from "../common-filters/year-select";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
+import RoleSelect from "../common-filters/role-select";
 
 interface JobFiltersProps {
   isFilterOpen: boolean;
@@ -15,7 +16,7 @@ interface JobFiltersProps {
       | number
       | boolean
       | null
-      | { label: string; value: number }
+      | { label: string; value: number | string }
       | null,
   ) => void;
   clearFilters: () => void;
@@ -45,6 +46,10 @@ const JobFilters = (props: JobFiltersProps) => {
             <p className="text-xs font-sans font-medium">Filters</p>
           </div>
           <div className="space-y-4">
+            <RoleSelect
+              value={(router.query.role as string) || null}
+              onValueChange={(value) => onFilterUpdate("role", value)}
+            />
             <YearSelect
               value={
                 router.query.year

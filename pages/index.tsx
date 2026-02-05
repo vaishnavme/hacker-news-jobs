@@ -41,6 +41,14 @@ const Home = () => {
         }
         break;
 
+      case "role":
+        if (value) {
+          currentQuery.role = value.value;
+        } else {
+          delete currentQuery.role;
+        }
+        break;
+
       case "remote":
         if (value) {
           currentQuery.remote = "true";
