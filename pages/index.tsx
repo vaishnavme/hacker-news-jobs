@@ -38,6 +38,8 @@ const Home = () => {
       case "query":
         if (value) {
           currentQuery.q = value;
+        } else {
+          delete currentQuery.q;
         }
         break;
 

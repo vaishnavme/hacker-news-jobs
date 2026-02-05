@@ -98,7 +98,7 @@ const JobContainer = () => {
         </div>
       ) : null}
 
-      <div className="flex items-center justify-between my-6 px-2 fixed bottom-0 w-full max-w-xl">
+      <div className="flex items-center justify-between py-4 px-2 fixed bottom-0 w-full max-w-xl bg-background/50 backdrop-blur-sm">
         <Button variant="black" onClick={onPreviousClick}>
           Previous
         </Button>
