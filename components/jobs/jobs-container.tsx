@@ -59,14 +59,14 @@ const JobContainer = () => {
         </div>
       ) : null}
       {!feedData.isLoading && feedData.data.length > 0 ? (
-        <div>
+        <div className="space-y-2">
           {feedData.data.map((post: PostType) => (
             <JobCard key={post.story_id} post={post} />
           ))}
         </div>
       ) : null}
 
-      {!feedData.isLoading && feedData.data.length === 0 ? (
+      {!feedData.isLoading && feedData?.data?.length === 0 ? (
         <div className="flex flex-col items-center text-center gap-2 my-10">
           <HugeiconsIcon
             icon={NoteFreeIcons}
@@ -98,19 +98,11 @@ const JobContainer = () => {
         </div>
       ) : null}
 
-      <div className="flex items-center justify-between my-6 px-2 fixed bottom-2 w-full max-w-xl">
-        <Button
-          variant="outline"
-          className="bg-background hover:bg-background/90"
-          onClick={onPreviousClick}
-        >
+      <div className="flex items-center justify-between my-6 px-2 fixed bottom-0 w-full max-w-xl">
+        <Button variant="black" onClick={onPreviousClick}>
           Previous
         </Button>
-        <Button
-          variant="outline"
-          className="bg-background hover:bg-background/90"
-          onClick={onNextClick}
-        >
+        <Button variant="black" onClick={onNextClick}>
           Next
         </Button>
       </div>

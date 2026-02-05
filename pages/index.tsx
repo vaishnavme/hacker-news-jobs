@@ -120,7 +120,7 @@ const Home = () => {
           >
             <Input
               name="search"
-              placeholder="Search jobs by country, role, or keyword..."
+              placeholder="Search jobs by country, role or keyword..."
               ref={inputRef}
             />
             <div className="flex items-center gap-2">
@@ -129,10 +129,9 @@ const Home = () => {
                 onClick={() =>
                   onFitlerUpdate("query", inputRef?.current?.value || "")
                 }
-                variant="outline"
               >
-                Search
                 <HugeiconsIcon icon={Search01FreeIcons} strokeWidth={2} />
+                Search
               </Button>
               <Button
                 onClick={() => onCopy(window.location.href)}
