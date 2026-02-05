@@ -27,7 +27,7 @@ const YearSelect = (props: YearSelectProps) => {
         defaultValue={value}
         onValueChange={onValueChange}
       >
-        <ComboboxInput placeholder="Please select year" />
+        <ComboboxInput />
         <ComboboxContent>
           <ComboboxEmpty>No items found.</ComboboxEmpty>
           <ComboboxList>

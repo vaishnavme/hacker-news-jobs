@@ -26,7 +26,7 @@ const MonthSelect = (props: MonthSelectProps) => {
         defaultValue={value}
         onValueChange={onValueChange}
       >
-        <ComboboxInput placeholder="Please select month" />
+        <ComboboxInput />
         <ComboboxContent>
           <ComboboxEmpty>No items found.</ComboboxEmpty>
           <ComboboxList>
