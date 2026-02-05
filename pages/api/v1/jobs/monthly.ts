@@ -20,9 +20,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       monthlyJobPostIds.slice(0, 50),
     );
 
+    const filteredResult = result.filter((job) => {
+      const jobTitle = job.title.toLowerCase();
+      return (
+        !jobTitle.includes("who wants to be hired") &&
+        !jobTitle.includes("ask hn: freelancer? seeking freelancer? ")
+      );
+    });
+
     return res.status(200).send({
       success: true,
-      data: result,
+      data: filteredResult,
     });
   } catch (_err) {
     return res.status(500).send({

@@ -1,25 +1,35 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { jobsAPI } from "@/lib/api";
+import JobCard, { JobSkeletonCard } from "./job-card";
+import { JobPost } from "@/lib/global.types";
 
-const username = "whoishiring";
-// https://hacker-news.firebaseio.com/v0/user/
-
-const MonthlyHiring = (props) => {
+const MonthlyHiring = () => {
   const feedData = useQuery({
     queryKey: ["monthly-hiring-data"],
     queryFn: async () => {
-      const response = await axios.get(
-        `https://hacker-news.firebaseio.com/v0/user/${username}.json`,
-      );
-      const storyIds = response.data.submitted;
-
-      // const story =
-      console.log(response.data);
-      return;
+      const response = await jobsAPI.monthly();
+      return response.data;
     },
   });
 
-  return <div>Monthly Hiring Component</div>;
+  return (
+    <div>
+      {feedData.isLoading ? (
+        <div>
+          {new Array(10).fill(null).map((_, index) => (
+            <JobSkeletonCard key={`skeleton-${index + 2}`} />
+          ))}
+        </div>
+      ) : null}
+      {!feedData.isLoading && feedData.data.length > 0 ? (
+        <div>
+          {feedData.data.map((job: JobPost) => (
+            <JobCard key={job.id} job={job} />
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
 };
 
 export default MonthlyHiring;
