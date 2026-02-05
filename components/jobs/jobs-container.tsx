@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import JobCard, { JobSkeletonCard } from "./job-card";
 import { Button } from "../ui/button";
 import { jobsAPI } from "@/lib/api";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { NoteFreeIcons } from "@hugeicons/core-free-icons";
 
 const JobContainer = () => {
   const router = useRouter();
@@ -64,17 +66,49 @@ const JobContainer = () => {
         </div>
       ) : null}
 
+      {!feedData.isLoading && feedData.data.length === 0 ? (
+        <div className="flex flex-col items-center text-center gap-2 my-10">
+          <HugeiconsIcon
+            icon={NoteFreeIcons}
+            strokeWidth={1}
+            size={40}
+            className="text-center text-muted-foreground"
+          />
+          <div>
+            {router.query.page ? (
+              <>
+                <p className="text-center text-sm font-medium">
+                  You&apos;ve reached the end!
+                </p>
+                <p className="text-center text-xs text-muted-foreground">
+                  No more jobs to show. Go back to previous pages.
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="text-center text-sm font-medium">
+                  We couldn&apos;t find jobs matching your criteria.
+                </p>
+                <p className="text-center text-xs text-muted-foreground">
+                  Maybe try with different job filters.
+                </p>
+              </>
+            )}
+          </div>
+        </div>
+      ) : null}
+
       <div className="flex items-center justify-between my-6 px-2 fixed bottom-2 w-full max-w-xl">
         <Button
           variant="outline"
-          className="bg-background"
+          className="bg-background hover:bg-background/90"
           onClick={onPreviousClick}
         >
           Previous
         </Button>
         <Button
           variant="outline"
-          className="bg-background"
+          className="bg-background hover:bg-background/90"
           onClick={onNextClick}
         >
           Next
