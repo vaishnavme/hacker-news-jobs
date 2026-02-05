@@ -60,6 +60,14 @@ const Home = () => {
         }
         break;
 
+      case "internship":
+        if (value) {
+          currentQuery.internship = "true";
+        } else {
+          delete currentQuery.internship;
+        }
+        break;
+
       default:
         break;
     }
@@ -200,6 +208,17 @@ const Home = () => {
                   }
                 />
                 <Label htmlFor="freelance-only">Freelance only</Label>
+              </div>
+
+              <div className="flex items-center gap-1">
+                <Checkbox
+                  id="internship-only"
+                  checked={router.query.internship === "true"}
+                  onCheckedChange={(checked) =>
+                    onFitlerUpdate("internship", checked)
+                  }
+                />
+                <Label htmlFor="internship-only">Internship only</Label>
               </div>
 
               <Button

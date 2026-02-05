@@ -9,12 +9,14 @@ const getHackerNewsAPIURL = ({
   pageNumber,
   remote,
   freelance,
+  internship,
 }: {
   timeRange?: { start: number; end: number } | null;
   queryInput?: string | null;
   pageNumber?: number | null;
   remote?: boolean;
   freelance?: boolean;
+  internship?: boolean;
 }): string => {
   let queryString = queryInput ? queryInput.trim() : "";
 
@@ -24,6 +26,10 @@ const getHackerNewsAPIURL = ({
 
   if (freelance && !queryString.toLowerCase().includes("freelance")) {
     queryString += " freelance";
+  }
+
+  if (internship && !queryString.toLowerCase().includes("internship")) {
+    queryString += " internship";
   }
 
   const url = new URL("https://hn.algolia.com/api/v1/search_by_date");
@@ -50,7 +56,7 @@ const getHackerNewsAPIURL = ({
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { page, month, year, q, remote, freelance } = req.query;
+  const { page, month, year, q, remote, freelance, internship } = req.query;
 
   const pageNumber = Math.max(0, parseInt((page as string) || "1", 10) - 1);
 
@@ -68,6 +74,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       pageNumber,
       remote: remote === "true",
       freelance: freelance === "true",
+      internship: internship === "true",
     });
     console.log("Fetching from HackerNews API with URL:", hackernewsAPI);
     const response = await axios.get(hackernewsAPI);
