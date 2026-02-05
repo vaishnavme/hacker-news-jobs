@@ -12,18 +12,21 @@ import { Label } from "../ui/label";
 const monthOptions = getMonthOptions();
 
 interface MonthSelectProps {
-  value?: { label: string; value: number } | null;
+  value?: number | null;
   onValueChange: (value: { label: string; value: number } | null) => void;
 }
 
 const MonthSelect = (props: MonthSelectProps) => {
   const { value, onValueChange } = props;
+
+  const selectedOption = monthOptions.find((option) => option.value === value);
+
   return (
     <div className="space-y-1">
       <Label>Month</Label>
       <Combobox
         items={monthOptions}
-        defaultValue={value}
+        value={selectedOption || null}
         onValueChange={onValueChange}
       >
         <ComboboxInput />

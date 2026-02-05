@@ -1,15 +1,21 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { FilterFreeIcons, Cancel01FreeIcons } from "@hugeicons/core-free-icons";
+import {
+  FilterFreeIcons,
+  Cancel01FreeIcons,
+  Search01FreeIcons,
+} from "@hugeicons/core-free-icons";
 import YearSelect from "@/components/common-filters/year-select";
 import MonthSelect from "@/components/common-filters/month-select";
 import JobContainer from "@/components/jobs/jobs-container";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 const Home = () => {
   const router = useRouter();
+  const inputRef = useRef<HTMLInputElement>(null);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -25,6 +31,11 @@ const Home = () => {
         currentQuery.month = value.value;
         break;
 
+      case "query":
+        if (value) {
+          currentQuery.q = value;
+        }
+
       default:
         break;
     }
@@ -32,6 +43,20 @@ const Home = () => {
     router.push({
       query: currentQuery,
     });
+  };
+
+  const onSearchQuerySubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onFitlerUpdate("query", inputRef?.current?.value || "");
+  };
+
+  const clearFilters = () => {
+    router.push({
+      query: {},
+    });
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
   };
 
   return (
@@ -51,9 +76,23 @@ const Home = () => {
             </h1>
           </header>
 
-          <div className="w-full border-b">
-            <p className="text-xs font-medium px-2 py-2">Job Posts</p>
-          </div>
+          <form
+            onClick={onSearchQuerySubmit}
+            className="w-full border-b pb-2 flex items-center justify-between px-2"
+          >
+            <Input name="search" placeholder="Search jobs" ref={inputRef} />
+            <Button
+              type="submit"
+              onClick={() =>
+                onFitlerUpdate("query", inputRef?.current?.value || "")
+              }
+              variant="outline"
+              className="ml-2"
+            >
+              Search
+              <HugeiconsIcon icon={Search01FreeIcons} strokeWidth={2} />
+            </Button>
+          </form>
 
           <JobContainer />
         </main>
@@ -84,20 +123,30 @@ const Home = () => {
           }`}
         >
           <div className="w-64 min-h-screen p-4 space-y-4">
-            <div className="flex items-center justify-between pt-38">
+            <div className="flex items-center justify-between pt-34">
               <p className="text-xs font-sans font-medium">Filters</p>
             </div>
             <div className="space-y-4">
               <YearSelect
+                value={
+                  router.query.year
+                    ? parseInt(String(router.query.year), 10)
+                    : null
+                }
                 onValueChange={(value) => onFitlerUpdate("year", value)}
               />
               <MonthSelect
+                value={
+                  router.query.month
+                    ? parseInt(String(router.query.month), 10)
+                    : null
+                }
                 onValueChange={(value) => onFitlerUpdate("month", value)}
               />
 
               <Button
                 variant="outline"
-                onClick={() => router.push("/")}
+                onClick={clearFilters}
                 className="ml-auto"
               >
                 Reset

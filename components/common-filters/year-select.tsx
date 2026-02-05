@@ -19,14 +19,11 @@ interface YearSelectProps {
 
 const YearSelect = (props: YearSelectProps) => {
   const { value, onValueChange } = props;
+
   return (
     <div className="space-y-1">
       <Label>Year</Label>
-      <Combobox
-        items={yearOptions}
-        defaultValue={value}
-        onValueChange={onValueChange}
-      >
+      <Combobox items={yearOptions} value={value} onValueChange={onValueChange}>
         <ComboboxInput />
         <ComboboxContent>
           <ComboboxEmpty>No items found.</ComboboxEmpty>

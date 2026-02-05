@@ -4,21 +4,20 @@ import { PostType } from "@/lib/global.types";
 import { getHNTimeRange } from "@/lib/utils";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { page, ...rest } = req.query;
+  const { page, month, year, q } = req.query;
 
   const pageNumber = Math.max(0, parseInt((page as string) || "1", 10) - 1);
 
-  const { month, year } = rest;
+  const queryInput = (q as string)?.trim() as string | undefined;
 
   const yearNum = year ? parseInt(year as string, 10) : undefined;
   const monthNum = month ? parseInt(month as string, 10) : undefined;
-
   const timeRange =
     yearNum || monthNum ? getHNTimeRange(yearNum, monthNum) : null;
 
   const url = new URL("https://hn.algolia.com/api/v1/search_by_date");
 
-  url.searchParams.set("tags", "story,author_whoishiring");
+  url.searchParams.set("tags", queryInput ? "job" : "story,author_whoishiring");
   url.searchParams.set("hitsPerPage", String(50));
 
   if (pageNumber > 0) {
@@ -28,6 +27,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (timeRange) {
     const numericFilters = `created_at_i>=${timeRange.start},created_at_i<${timeRange.end}`;
     url.searchParams.set("numericFilters", numericFilters);
+  }
+
+  if (queryInput && queryInput.length) {
+    url.searchParams.set("query", queryInput.trim());
   }
 
   try {
@@ -47,7 +50,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       data: posts,
     });
   } catch (_err) {
-    console.log("Error fetching jobs:", _err);
     res.status(500).send({
       success: false,
       error: {
