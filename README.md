@@ -1,8 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Hacker News Jobs
+
+A job board that aggregates job postings from Hacker News "Who is Hiring?" threads. Built with Next.js and powered by the [Hacker News Algolia API](https://hn.algolia.com/api).
+
+## Features
+
+- **Search Jobs** - Search through job postings with keywords
+- **Filter by Date** - Filter jobs by year and month
+- **Filter by Role** - Filter by specific job roles (Frontend, Backend, Full Stack, etc.)
+- **Remote Filter** - Toggle to show only remote positions
+- **Internship Filter** - Toggle to show only internship positions
+- **Freelance Filter** - Toggle to show only freelance positions
+- **Copy URL** - Share filtered job searches with others
+- **Responsive Design** - Collapsible filter panel for mobile devices
+- **Pagination** - Browse through multiple pages of job listings
+
+## Tech Stack
+
+- [Next.js](https://nextjs.org) - React framework
+- [React Query](https://tanstack.com/query) - Data fetching & caching
+- [Tailwind CSS](https://tailwindcss.com) - Styling
+- [Base UI](https://base-ui.com) - Headless UI components
+- [Hugeicons](https://hugeicons.com) - Icons
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the repository:
+
+```bash
+git clone https://github.com/vaishnavme/hacker-news-jobs.git
+cd hacker-news-jobs
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
+
+3. Run the development server:
 
 ```bash
 npm run dev
@@ -10,27 +49,29 @@ npm run dev
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## API
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The app uses the Hacker News Algolia API to fetch job postings from "Who is Hiring?" threads.
 
-## Learn More
+### Endpoints
 
-To learn more about Next.js, take a look at the following resources:
+- `GET /api/v1/jobs` - Fetch job postings with optional filters:
+  - `page` - Page number (starts from 1)
+  - `year` - Filter by year
+  - `month` - Filter by month (1-12)
+  - `q` - Search query
+  - `remote` - Filter remote jobs
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deploy
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Deploy on [Vercel](https://vercel.com):
 
-## Deploy on Vercel
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vaishnavme/hacker-news-jobs)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
