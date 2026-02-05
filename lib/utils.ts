@@ -8,7 +8,7 @@ export const cn = (...inputs: ClassValue[]) => {
 export const getYearOptions = (startYear: number): number[] => {
   const currentYear = startYear;
   const years: number[] = [];
-  for (let year = currentYear; year >= currentYear - 10; year--) {
+  for (let year = currentYear; year >= 2006; year--) {
     years.push(year);
   }
   return years;
@@ -44,3 +44,23 @@ export const formatUnixDate = (unixTime: number): string => {
 
 export const getHackerNewsItemUrl = (id: number): string =>
   `https://news.ycombinator.com/item?id=${id}`;
+
+export const getHNTimeRange = (year?: number, month?: number) => {
+  const yearNum = year ?? new Date().getUTCFullYear();
+
+  if (month !== undefined) {
+    if (month < 1 || month > 12) {
+      throw new Error("month must be between 1 and 12");
+    }
+
+    const start = Math.floor(Date.UTC(yearNum, month - 1, 1, 0, 0, 0) / 1000);
+    const end = Math.floor(Date.UTC(yearNum, month, 1, 0, 0, 0) / 1000);
+
+    return { start, end, year: yearNum, month };
+  }
+
+  const start = Math.floor(Date.UTC(yearNum, 0, 1, 0, 0, 0) / 1000);
+  const end = Math.floor(Date.UTC(yearNum + 1, 0, 1, 0, 0, 0) / 1000);
+
+  return { start, end, year: yearNum };
+};

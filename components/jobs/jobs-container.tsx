@@ -20,11 +20,11 @@ const JobContainer = () => {
     const currentQuery = router?.query ? { ...router.query } : {};
     const currentPage = currentQuery.page
       ? parseInt(currentQuery.page as string, 10)
-      : 0;
+      : 1;
 
-    if (currentPage > 0) {
+    if (currentPage > 1) {
       const newPage = currentPage - 1;
-      if (newPage === 0) {
+      if (newPage === 1) {
         delete currentQuery.page;
       } else {
         currentQuery.page = String(newPage);
@@ -39,7 +39,7 @@ const JobContainer = () => {
     const currentQuery = router?.query ? { ...router.query } : {};
     const currentPage = currentQuery.page
       ? parseInt(currentQuery.page as string, 10)
-      : 0;
+      : 1;
 
     currentQuery.page = String(currentPage + 1);
     router.push({
@@ -48,7 +48,7 @@ const JobContainer = () => {
   };
 
   return (
-    <div>
+    <div className="pb-20">
       {feedData.isLoading ? (
         <div>
           {new Array(10).fill(null).map((_, index) => (
@@ -64,11 +64,19 @@ const JobContainer = () => {
         </div>
       ) : null}
 
-      <div className="flex items-center justify-between my-6 px-2">
-        <Button variant="outline" onClick={onPreviousClick}>
+      <div className="flex items-center justify-between my-6 px-2 fixed bottom-2 w-full max-w-xl">
+        <Button
+          variant="outline"
+          className="bg-background"
+          onClick={onPreviousClick}
+        >
           Previous
         </Button>
-        <Button variant="outline" onClick={onNextClick}>
+        <Button
+          variant="outline"
+          className="bg-background"
+          onClick={onNextClick}
+        >
           Next
         </Button>
       </div>

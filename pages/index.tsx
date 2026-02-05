@@ -52,7 +52,7 @@ const Home = () => {
           </header>
 
           <div className="w-full border-b">
-            <p className="text-xs font-medium px-2 py-2">Trending Jobs</p>
+            <p className="text-xs font-medium px-2 py-2">Job Posts</p>
           </div>
 
           <JobContainer />
@@ -94,6 +94,14 @@ const Home = () => {
               <MonthSelect
                 onValueChange={(value) => onFitlerUpdate("month", value)}
               />
+
+              <Button
+                variant="outline"
+                onClick={() => router.push("/")}
+                className="ml-auto"
+              >
+                Reset
+              </Button>
             </div>
           </div>
         </aside>

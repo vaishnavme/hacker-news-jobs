@@ -1,45 +1,53 @@
-import { PostType } from "@/lib/global.types";
-import axios from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
+import axios from "axios";
+import { PostType } from "@/lib/global.types";
+import { getHNTimeRange } from "@/lib/utils";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { page, ...rest } = req.query;
 
-  const pageNumber = parseInt((page as string) || "0", 10);
-  const hasOtherQueries = Object.keys(rest).length > 0;
+  const pageNumber = Math.max(0, parseInt((page as string) || "1", 10) - 1);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const query: Record<string, any> = hasOtherQueries
-    ? { ...rest, tags: "story" }
-    : { tags: "story,author_whoishiring", page: pageNumber };
+  const { month, year } = rest;
+
+  const yearNum = year ? parseInt(year as string, 10) : undefined;
+  const monthNum = month ? parseInt(month as string, 10) : undefined;
+
+  const timeRange =
+    yearNum || monthNum ? getHNTimeRange(yearNum, monthNum) : null;
+
+  const url = new URL("https://hn.algolia.com/api/v1/search_by_date");
+
+  url.searchParams.set("tags", "story,author_whoishiring");
+  url.searchParams.set("hitsPerPage", String(50));
 
   if (pageNumber > 0) {
-    query.page = pageNumber;
+    url.searchParams.set("page", String(pageNumber));
+  }
+
+  if (timeRange) {
+    const numericFilters = `created_at_i>=${timeRange.start},created_at_i<${timeRange.end}`;
+    url.searchParams.set("numericFilters", numericFilters);
   }
 
   try {
-    const response = await axios.get(
-      `https://hn.algolia.com/api/v1/search_by_date?${new URLSearchParams(
-        query,
-      ).toString()}`,
-    );
+    const response = await axios.get(url.toString());
     let posts = response.data.hits || [];
 
-    if (!hasOtherQueries) {
-      posts = posts.filter((post: PostType) => {
-        const jobTitle = post.title.toLowerCase();
-        return (
-          !jobTitle.includes("who wants to be hired") &&
-          !jobTitle.includes("ask hn: freelancer? seeking freelancer? ")
-        );
-      });
-    }
+    posts = posts.filter((post: PostType) => {
+      const jobTitle = post.title.toLowerCase();
+      return (
+        !jobTitle.includes("who wants to be hired") &&
+        !jobTitle.includes("ask hn: freelancer? seeking freelancer? ")
+      );
+    });
 
     return res.status(200).send({
       success: true,
       data: posts,
     });
   } catch (_err) {
+    console.log("Error fetching jobs:", _err);
     res.status(500).send({
       success: false,
       error: {
